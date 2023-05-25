@@ -115,7 +115,7 @@ router.get('/dashboard', authMiddleware, async (req, res) => {
 // Get add-post page
 router.get('/add-post', authMiddleware, async (req, res) => {
   try {
-    res.render('admin/add-post', { pageTitle: 'Add new post', layout: adminLayout, currentRoute: '/dashboard' })
+    res.render('admin/add-post', { pageTitle: 'Add new post', layout: adminLayout, currentRoute: '/dashboard', auth: true, authreg: true })
   } catch (e) {
     console.log(e);
   }
@@ -148,7 +148,7 @@ router.get('/edit-post/:id', authMiddleware, async (req, res) => {
     const {editP} = req.query;
 
     res.render('admin/edit-post', {
-      data, pageTitle: 'Edit Post', layout: adminLayout, currentRoute: '/dashboard', editP
+      data, pageTitle: 'Edit Post', layout: adminLayout, currentRoute: '/dashboard', editP, auth: true, authreg: true
     })
   } catch (err) {
     console.log(err)
