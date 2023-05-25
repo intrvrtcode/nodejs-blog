@@ -1,0 +1,73 @@
+<h3 style="text-align: center;">
+  <%= greeting %> <span><i class="fa-solid fa-circle-user fa-lg"></i></span> <span id="dashboard-username">
+      <%= userName %>
+    </span>
+</h3>
+<div class="admin-title">
+  <h2>Your Posts</h2>
+  <a href="/add-post">+ Add New</a>
+</div>
+
+<ul class="admin-posts">
+  <% data.forEach(item=> { %>
+
+    <li>
+      <a href="/post/<%= item._id %>">
+        <%= item.title %> &nearr;
+      </a>
+
+      <div class="admin-post-controls">
+        <a href="/edit-post/<%= item._id %>" class="btn">Edit</a>
+
+        <form action="/delete-post/<%= item._id %>?_method=DELETE" method="POST">
+          <input type="submit" value="Delete" class="btn">
+        </form>
+      </div>
+    </li>
+
+    <% }) %>
+
+      <% if (data.length===0) { %>
+        <h4 style="text-align: center;">- You don't have any post -</h4>
+        <% } %>
+</ul>
+
+<% if (auth) { %>
+  <script>
+    Swal.fire({
+      title: 'Succes Login',
+      text: 'Welcome back',
+      icon: 'success',
+    })
+  </script>
+  <% } %>
+
+    <% if (authreg) { %>
+      <script>
+        Swal.fire({
+          title: 'Succes Register',
+          text: 'Welcome to this blog',
+          icon: 'success',
+        })
+      </script>
+      <% } %>
+
+        <% if (newP) { %>
+          <script>
+            Swal.fire({
+              title: 'Succes',
+              text: 'sucees add new post',
+              icon: 'success',
+            })
+          </script>
+          <% } %>
+
+            <% if (deleted) { %>
+              <script>
+                Swal.fire({
+                  title: 'Succes',
+                  text: 'sucees delete post',
+                  icon: 'success',
+                })
+              </script>
+              <% } %>

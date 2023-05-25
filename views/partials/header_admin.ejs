@@ -1,0 +1,19 @@
+<header class="header">
+  <a href="/" class="header__logo">Admin Panel</a>
+
+  <nav class="header__nav">
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/dashboard" class="<%= isActiveRoute('/dashboard', currentRoute) %>">Dashboard</a></li>
+    </ul>
+  </nav>
+
+  <% if (auth || authreg) { %>
+    <div class="header__button">
+      <a href="/logout">
+        Logout <i class="fa-solid fa-right-from-bracket"></i>
+      </a>
+    </div>
+    <% } %>
+</header>

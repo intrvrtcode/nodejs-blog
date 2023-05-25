@@ -1,0 +1,57 @@
+<section id="login-section">
+  <h3>Login for more access</h3>
+
+  <form action="/admin" method="POST">
+    <label for="username"><b>Username</b></label>
+    <input type="text" id="username" name="username" placeholder="Enter Username" autocomplete="off" autofocus
+      required />
+
+    <label for="password"><b>Password</b></label>
+    <input type="password" id="password" name="password" placeholder="Enter Password" autocomplete="off" minlength="8"
+      required />
+
+    <input type="submit" value="Login" class="btn" />
+  </form>
+
+  <span id="toggle-register">Not have account</span>
+</section>
+
+<section id="register-section" style="display: none;">
+  <h3>Create An Account</h3>
+
+  <form action="/register" method="POST">
+    <label for="username"><b>Username</b></label>
+    <input type="text" id="username" name="username" placeholder="Enter Username" autocomplete="off" autofocus
+      required />
+
+    <label for="password"><b>Password</b></label>
+    <input type="password" id="password" name="password" placeholder="Enter Password" autocomplete="off" minlength="8"
+      required />
+
+    <input type="submit" value="Register" class="btn" />
+  </form>
+
+  <span id="toggle-login">have account</span>
+</section>
+
+<% if (auth === 'error') { %>
+ <script>
+   Swal.fire({
+    title: 'Failed!',
+    text: 'Username or password does not match!',
+    icon: 'error',
+    confirmButtonText: 'Try Again'
+   })
+ </script>
+<% } %>
+
+<% if (authreg === 'error') { %>
+  <script>
+    Swal.fire({
+     title: 'Failed!',
+     text: 'Username already in use!',
+     icon: 'error',
+     confirmButtonText: 'Try Again'
+    })
+  </script>
+ <% } %>
