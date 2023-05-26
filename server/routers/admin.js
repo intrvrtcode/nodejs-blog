@@ -8,17 +8,21 @@ const User = require('../models/user');
 const adminLayout = '../views/layout/admin'
 const jwtSecret = process.env.JWT_SECRET
 
+let isAuth = false;
+
 // Check Login
 const authMiddleware = (req, res, next) => {
   const token = req.cookies.token;
 
   if (!token) {
-    res.redirect('/admin')
+    res.redirect('/admin');
+    return null;
   }
 
   try {
     const decoded = jwt.verify(token, jwtSecret);
     req.userId = decoded.userId;
+    isAuth = true;
     next();
   } catch (e) {
     return res.status(401).json({ message: 'Unauthorized' })
@@ -31,7 +35,7 @@ router.get('/admin', async (req, res) => {
 
     const {auth, authreg} = req.query;
 
-    res.render('admin/index', { pageTitle: 'Admin', layout: adminLayout, currentRoute: '/dashboard',  auth, authreg})
+    res.render('admin/index', { pageTitle: 'Admin', layout: adminLayout, currentRoute: '/dashboard',  auth, authreg, isAuth})
   } catch (e) {
     console.log(e);
   }
@@ -106,7 +110,7 @@ router.get('/dashboard', authMiddleware, async (req, res) => {
     const data = await Post.find({author: req.cookies.username});
     const {auth, authreg, newP, deleted} = req.query;
 
-    res.render('admin/dashboard', { pageTitle: 'Admin', data, layout: adminLayout, currentRoute: '/dashboard', userName: req.cookies.username, auth, authreg, newP, deleted});
+    res.render('admin/dashboard', { pageTitle: 'Admin', data, layout: adminLayout, currentRoute: '/dashboard', userName: req.cookies.username, auth, authreg, newP, deleted, isAuth});
   } catch (e) {
     console.log(e);
   }
@@ -115,7 +119,7 @@ router.get('/dashboard', authMiddleware, async (req, res) => {
 // Get add-post page
 router.get('/add-post', authMiddleware, async (req, res) => {
   try {
-    res.render('admin/add-post', { pageTitle: 'Add new post', layout: adminLayout, currentRoute: '/dashboard', auth: true, authreg: true })
+    res.render('admin/add-post', { pageTitle: 'Add new post', layout: adminLayout, currentRoute: '/dashboard', isAuth })
   } catch (e) {
     console.log(e);
   }
@@ -148,8 +152,7 @@ router.get('/edit-post/:id', authMiddleware, async (req, res) => {
     const {editP} = req.query;
 
     res.render('admin/edit-post', {
-      data, pageTitle: 'Edit Post', layout: adminLayout, currentRoute: '/dashboard', editP, auth: true, authreg: true
-    })
+      data, pageTitle: 'Edit Post', layout: adminLayout, currentRoute: '/dashboard', editP, isAuth})
   } catch (err) {
     console.log(err)
   }

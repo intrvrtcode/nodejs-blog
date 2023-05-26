@@ -9,7 +9,7 @@
     </ul>
   </nav>
 
-  <% if (auth || authreg) { %>
+  <% if ( isAuth ) { %>
     <div class="header__button">
       <a href="/logout">
         Logout <i class="fa-solid fa-right-from-bracket"></i>
