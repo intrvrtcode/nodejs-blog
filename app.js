@@ -39,7 +39,10 @@ app.set('layout', './layout/main');
 app.set('view engine', 'ejs');
 
 app.locals.isActiveRoute = isActiveRoute;
-app.locals.greeting = addGreeting();
+app.locals.greeting = '';
+app.locals.getGreeting = () => {
+  app.locals.greeting = addGreeting();
+}
 
 app.use('/', require( './server/routers/main'));
 app.use('/', require('./server/routers/admin'));

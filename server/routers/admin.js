@@ -67,6 +67,7 @@ router.post('/admin', async (req, res) => {
     res.cookie('username', user.username);
     
     if(!failedAuth) {
+      req.app.locals.getGreeting();
       res.redirect(`/dashboard/?auth=true`);
     }
 
@@ -89,6 +90,7 @@ router.post('/register', async (req, res) => {
       res.cookie('token', token, { httpOnly: true });
 
       res.cookie('username',  newUser.username);
+      req.app.locals.getGreeting();
       res.redirect('/dashboard/?authreg=true');
     } catch (e) {
       if (e.code === 11000) {
@@ -109,6 +111,8 @@ router.get('/dashboard', authMiddleware, async (req, res) => {
   try {
     const data = await Post.find({author: req.cookies.username});
     const {auth, authreg, newP, deleted} = req.query;
+
+    req.app.locals.getGreeting();
 
     res.render('admin/dashboard', { pageTitle: 'Admin', data, layout: adminLayout, currentRoute: '/dashboard', userName: req.cookies.username, auth, authreg, newP, deleted, isAuth});
   } catch (e) {
