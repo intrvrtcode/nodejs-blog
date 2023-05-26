@@ -4,7 +4,7 @@ function isActiveRoute(route, currentRoute) {
 
 function addGreeting() {
   let timeNow = new Date().getHours();
-  console.log(new Date());
+  console.log(timeNow);
   let greeting =
   timeNow >= 5 && timeNow < 12
     ? "Good Morning"
