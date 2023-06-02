@@ -481,3 +481,16 @@ img {
   font-weight: bold;
   color: var(--gray);
 }
+
+/* Admin Login / Register */
+.input-wrapper {
+  position: relative;
+}
+
+.showorhide-btn {
+  display: block;
+  position: absolute;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+}

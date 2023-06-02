@@ -2,13 +2,16 @@
   <h3>Login for more access</h3>
 
   <form action="/admin" method="POST">
-    <label for="username"><b>Username</b></label>
-    <input type="text" id="username" name="username" placeholder="Enter Username" autocomplete="off" autofocus
+    <label for="usernamelogin"><b>Username</b></label>
+    <input type="text" id="usernamelogin" name="username" placeholder="Enter Username" autocomplete="off" autofocus
       required />
 
-    <label for="password"><b>Password</b></label>
-    <input type="password" id="password" name="password" placeholder="Enter Password" autocomplete="off" minlength="8"
-      required />
+    <label for="passwordlogin"><b>Password</b></label>
+    <div class="input-wrapper">
+      <input type="password" id="passwordlogin" name="password" placeholder="Enter Password" autocomplete="off" minlength="8"
+        required />
+      <span class="showorhide-btn"><i class="fa-regular fa-eye fa-lg"></i></span>
+    </div>
 
     <input type="submit" value="Login" class="btn" />
   </form>
@@ -20,13 +23,17 @@
   <h3>Create An Account</h3>
 
   <form action="/register" method="POST">
-    <label for="username"><b>Username</b></label>
-    <input type="text" id="username" name="username" placeholder="Enter Username" autocomplete="off" autofocus
+    <label for="usernamereg"><b>Username</b></label>
+    <input type="text" id="usernamereg" name="username" placeholder="Enter Username" autocomplete="off" autofocus
       required />
 
-    <label for="password"><b>Password</b></label>
-    <input type="password" id="password" name="password" placeholder="Enter Password" autocomplete="off" minlength="8"
-      required />
+    <label for="passwordreg"><b>Password</b></label>
+    <div class="input-wrapper">
+      <input type="password" id="passwordreg" name="password" placeholder="Enter Password" autocomplete="off" minlength="8"
+        required />
+
+      <span class="showorhide-btn"><i class="fa-regular fa-eye fa-lg"></i></span>
+    </div>
 
     <input type="submit" value="Register" class="btn" />
   </form>
@@ -34,24 +41,45 @@
   <span id="toggle-login">have account</span>
 </section>
 
-<% if (auth === 'error') { %>
- <script>
-   Swal.fire({
-    title: 'Failed!',
-    text: 'Username or password does not match!',
-    icon: 'error',
-    confirmButtonText: 'Try Again'
-   })
- </script>
-<% } %>
-
-<% if (authreg === 'error') { %>
+<% if (auth==='error' ) { %>
   <script>
     Swal.fire({
-     title: 'Failed!',
-     text: 'Username already in use!',
-     icon: 'error',
-     confirmButtonText: 'Try Again'
+      title: 'Failed!',
+      text: 'Username or password does not match!',
+      icon: 'error',
+      confirmButtonText: 'Try Again'
     })
   </script>
- <% } %>
+  <% } %>
+
+    <% if (authreg==='error' ) { %>
+      <script>
+        Swal.fire({
+          title: 'Failed!',
+          text: 'Username already in use!',
+          icon: 'error',
+          confirmButtonText: 'Try Again'
+        })
+      </script>
+      <% } %>
+
+        <script>
+          const showOrHideBtn = document.getElementsByClassName('showorhide-btn');
+
+          for (const btn of showOrHideBtn) {
+            btn.addEventListener('click', (e) => {
+              let targetElement = e.target.parentElement.previousElementSibling;
+
+              if(targetElement.type === 'password') {
+                targetElement.type = 'text'
+                btn.firstChild.classList.remove('fa-eye');
+                btn.firstChild.classList.add('fa-eye-slash')
+              } else {
+                targetElement.type = 'password'
+                btn.firstChild.classList.remove('fa-eye-slash');
+                btn.firstChild.classList.add('fa-eye');
+              }
+              
+            })
+          }
+        </script>

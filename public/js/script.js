@@ -36,9 +36,3 @@ document.getElementById('toggle-login').addEventListener('click', () => {
   RegisterSection.style.display = 'none';
   loginSection.style.display = 'block';
 })
-
-const errorAlert = document.getElementById('error-alert');
-
-document.getElementById('close-alert').addEventListener('click', () => {
-  errorAlert.style.display = 'none';
-})
