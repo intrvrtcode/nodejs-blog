@@ -34,7 +34,7 @@ router.get('/post/:id', async (req, res) => {
     let slug = req.params.id;
 
     const data = await Post.findById(slug).exec();
-    res.render('post', {data, pageTitle: 'Test', currentRoute: `/post/${slug}`});
+    res.render('post', {data, pageTitle: 'test', currentRoute: `/post/${slug}`});
   } catch(e) {
     console.log(e);
   }
@@ -62,7 +62,7 @@ router.post('/search', async (req, res) => {
 })
 
 router.get('/about', (req, res) => {
-  res.render('about', {pageTitle: 'NodeJs with mongoDB Blog', currentRoute: '/about'})
+  res.render('about', {pageTitle: 'About this blog', currentRoute: '/about'})
 })
 
 module.exports = router;

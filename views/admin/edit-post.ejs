@@ -4,13 +4,16 @@
 </div>
 
 <form class="delete-form" action="/delete-post/<%= data.id %>?_method=DELETE" method="POST">
-  <input type="submit" value="Delete" class="btn-delete btn" />
+  <span class="btn-delete btn">Delete</span>
 </form>
 
 <form action="/edit-post/<%= data.id %>?_method=PUT" method="POST">
 
   <label for="title"><b>Title</b></label>
   <input id="title" type="text" name="title" value="<%= data.title %>" placeholder="Post Title" />
+
+  <label for="tags"><b>Tags</b></label>
+  <input id="tags" type="text" name="tags" value="<%= data.tags.join(', ') %>" />
 
   <label for="hero-image"><b>Hero Image Link</b></label>
   <input id="hero-image" type="text" name="image" value="<%= data.image %>" placeholder="Paste link here..." />
@@ -29,4 +32,25 @@
       icon: 'success',
     })
   </script>
-<% } %>
+  <% } %>
+
+    <script>
+      const BtnDelete = document.querySelector('.btn-delete');
+
+      BtnDelete.addEventListener('click', async (e) => {
+        e.preventDefault();
+
+        Swal.fire({
+          title: "Are you sure?",
+          text: "You will not be able to recover this post!",
+          showCancelButton: true,
+          confirmButtonColor: '#DD6B55',
+          confirmButtonText: 'Yes',
+          cancelButtonText: "No",
+        }).then((result) => {
+          if (result['isConfirmed']) {
+            e.target.parentElement.submit()
+          }
+        })
+      })
+    </script>

@@ -3,8 +3,11 @@
 
   <form action="/admin" method="POST">
     <label for="usernamelogin"><b>Username</b></label>
-    <input type="text" id="usernamelogin" name="username" placeholder="Enter Username" autocomplete="off" autofocus
+    <div class="input-wrapper">
+      <input type="text" id="usernamelogin" name="username" placeholder="Enter Username" autocomplete="off" autofocus
       required />
+      <span><i class="fa-solid fa-user fa-lg"></i></span>
+    </div>
 
     <label for="passwordlogin"><b>Password</b></label>
     <div class="input-wrapper">
@@ -24,8 +27,12 @@
 
   <form action="/register" method="POST">
     <label for="usernamereg"><b>Username</b></label>
-    <input type="text" id="usernamereg" name="username" placeholder="Enter Username" autocomplete="off" autofocus
+    <div class="input-wrapper">
+      <input type="text" id="usernamereg" name="username" placeholder="Enter Username" autocomplete="off" autofocus
       required />
+
+      <span><i class="fa-solid fa-user fa-lg"></i></span>
+    </div>
 
     <label for="passwordreg"><b>Password</b></label>
     <div class="input-wrapper">

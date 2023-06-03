@@ -11,6 +11,12 @@
 
   <p class="post-info">by <%= data.author %> - <%= data.createdAt.toDateString() %></p>
 
+  <p class="tags">
+    <% data.tags.forEach(item => { %>
+     <span>#<%= item %></span>
+    <% }) %>
+  </p>
+  
   <article class="article">
     <%= data.body %>
   </article>

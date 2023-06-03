@@ -1,5 +1,5 @@
 <h3 style="text-align: center;">
-  <%= greeting %> <span><i class="fa-solid fa-circle-user fa-lg"></i></span> <span id="dashboard-username">
+  <%= greeting %> <span id="dashboard-username">
       <%= userName %>
     </span>
 </h3>
@@ -20,7 +20,7 @@
         <a href="/edit-post/<%= item._id %>" class="btn">Edit</a>
 
         <form action="/delete-post/<%= item._id %>?_method=DELETE" method="POST">
-          <input type="submit" value="Delete" class="btn">
+          <span id="delete-btn" class="btn">Delete</span>
         </form>
       </div>
     </li>
@@ -31,6 +31,27 @@
         <h4 style="text-align: center;">- You don't have any post -</h4>
         <% } %>
 </ul>
+
+<script>
+  const BtnDelete = document.querySelector('#delete-btn');
+
+  BtnDelete.addEventListener('click', async (e) => {
+    e.preventDefault();
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You will not be able to recover this post!",
+      showCancelButton: true,
+      confirmButtonColor: '#DD6B55',
+      confirmButtonText: 'Yes',
+      cancelButtonText: "No",
+    }).then((result) => {
+      if (result['isConfirmed']) {
+        e.target.parentElement.submit()
+      }
+    })
+  })
+</script>
 
 <% if (auth) { %>
   <script>

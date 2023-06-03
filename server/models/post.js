@@ -13,6 +13,10 @@ const PostSchema = new schema({
   image: {
     type: String,
   },
+  tags: {
+    type: Array,
+    default: []
+  },
   body: {
     type: String,
     required: true

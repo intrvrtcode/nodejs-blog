@@ -133,10 +133,11 @@ router.get('/add-post', authMiddleware, async (req, res) => {
 router.post('/add-post', authMiddleware, async (req, res) => {
   try {
     try {
-      const { title, body, image } = req.body;
+      const { title, body, image, tags } = req.body;
 
-      const newPost = new Post({ title, body, image, author: req.cookies.username });
-      await Post.create(newPost);
+      const newPost = new Post({ title, body, image, tags: tags.split(/,\s*/g), author: req.cookies.username });
+      const response = await Post.create(newPost);
+      
       res.redirect('/dashboard/?newP=true');
 
     } catch (err) {
@@ -170,6 +171,7 @@ router.put('/edit-post/:id', authMiddleware, async (req, res) => {
       title: req.body.title,
       body: req.body.body,
       image: req.body.image,
+      tags: req.body.tags.split(/,\s*/g),
       updatedAt: Date.now()
     })
 
