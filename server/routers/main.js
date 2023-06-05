@@ -1,6 +1,20 @@
 const express = require('express');
 const router = express.Router();
 const Post = require('../models/post');
+const nodemailer = require('nodemailer');
+
+// nodemailer config
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
+  auth: {
+    user: 'aldirmd.freelance@gmail.com',
+    pass: 'wadlyhldarnqdgeo'
+  }
+});
+
 
 // routers
 
@@ -9,7 +23,7 @@ router.get('/', async (req, res) => {
   try {
     let perPage = 5;
     let page = req.query.page || 1;
-    const {logout} = req.query;
+    const { logout } = req.query;
 
     const data = await Post.aggregate([{ $sort: { createdAt: -1 } }])
       .skip(perPage * page - perPage)
@@ -22,7 +36,7 @@ router.get('/', async (req, res) => {
     const hasPrevPage = prevPage <= Math.ceil(count / perPage);
     const hasNextPage = nextPage > 0;
 
-    res.render('index', { data, current: page, prevPage: hasPrevPage ? prevPage : null, nextPage: hasNextPage ? nextPage : null, pageTitle: 'Blog page with NodeJs & MongoDB', currentRoute: '/', logout});
+    res.render('index', { data, current: page, prevPage: hasPrevPage ? prevPage : null, nextPage: hasNextPage ? nextPage : null, pageTitle: 'Blog page with NodeJs & MongoDB', currentRoute: '/', logout });
   } catch (e) {
     console.log(e)
   }
@@ -34,8 +48,8 @@ router.get('/post/:id', async (req, res) => {
     let slug = req.params.id;
 
     const data = await Post.findById(slug).exec();
-    res.render('post', {data, pageTitle: 'test', currentRoute: `/post/${slug}`});
-  } catch(e) {
+    res.render('post', { data, pageTitle: null, currentRoute: `/post/${slug}` });
+  } catch (e) {
     console.log(e);
   }
 });
@@ -49,67 +63,48 @@ router.post('/search', async (req, res) => {
 
     const data = await Post.find({
       $or: [
-        {title: {$regex: new RegExp(searchNoSpecialChar, 'i')}},
-        {body: {$regex: new RegExp(searchNoSpecialChar, 'i')}}
+        { title: { $regex: new RegExp(searchNoSpecialChar, 'i') } },
+        { body: { $regex: new RegExp(searchNoSpecialChar, 'i') } }
       ]
-    })    
+    })
 
-    res.render('search', {data, pageTitle: 'Search', currentRoute: '/'});
+    res.render('search', { data, pageTitle: 'Looking for posts', currentRoute: '/' });
 
-  } catch(e) {
+  } catch (e) {
     console.log(e);
   }
 })
 
+// GET - about page
 router.get('/about', (req, res) => {
-  res.render('about', {pageTitle: 'About this blog', currentRoute: '/about'})
+  res.render('about', { pageTitle: 'About this blog', currentRoute: '/about' })
+})
+
+// GET - contact section
+router.get('/contact', (req, res) => {
+  const {send} = req.query;
+
+  res.render('contact', { pageTitle: 'Contact Us', currentRoute: '/contact', send })
+})
+
+// POST - contact section
+router.post('/contact', (req, res) => {
+  const { email, subject, message } = req.body;
+
+  const mailOptions = {
+    from: email,
+    to: 'aldi.rahmaddani12@gmail.com',
+    subject: subject,
+    text: message + `\n(sender: ${email})`
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      res.redirect('/contact/?send=error')
+    } else {
+      res.redirect('/contact/?send=true')
+    }
+  });
 })
 
 module.exports = router;
-
-// function insertPostData() {
-//   Post.insertMany([
-//     {
-//       title: "Building APIs with Node.js",
-//       body: "Learn how to use Node.js to build RESTful APIs using frameworks like Express.js"
-//     },
-//     {
-//       title: "Deployment of Node.js applications",
-//       body: "Understand the different ways to deploy your Node.js applications, including on-premises, cloud, and container environments..."
-//     },
-//     {
-//       title: "Authentication and Authorization in Node.js",
-//       body: "Learn how to add authentication and authorization to your Node.js web applications using Passport.js or other authentication libraries."
-//     },
-//     {
-//       title: "Understand how to work with MongoDB and Mongoose",
-//       body: "Understand how to work with MongoDB and Mongoose, an Object Data Modeling (ODM) library, in Node.js applications."
-//     },
-//     {
-//       title: "build real-time, event-driven applications in Node.js",
-//       body: "Socket.io: Learn how to use Socket.io to build real-time, event-driven applications in Node.js."
-//     },
-//     {
-//       title: "Discover how to use Express.js",
-//       body: "Discover how to use Express.js, a popular Node.js web framework, to build web applications."
-//     },
-//     {
-//       title: "Asynchronous Programming with Node.js",
-//       body: "Asynchronous Programming with Node.js: Explore the asynchronous nature of Node.js and how it allows for non-blocking I/O operations."
-//     },
-//     {
-//       title: "Learn the basics of Node.js and its architecture",
-//       body: "Learn the basics of Node.js and its architecture, how it works, and why it is popular among developers."
-//     },
-//     {
-//       title: "NodeJs Limiting Network Traffic",
-//       body: "Learn how to limit netowrk traffic."
-//     },
-//     {
-//       title: "Learn Morgan - HTTP Request logger for NodeJs",
-//       body: "Learn Morgan."
-//     },
-//   ])
-// }
-
-// insertPostData();

@@ -1,0 +1,35 @@
+<h3 style="text-align: center;"><i class="fa-solid fa-envelope"></i> We'd Love to Hear from You</h3>
+
+<form action="/contact" method="POST" autocomplete="off">
+  <label for="email"><b>Email</b></label>
+  <input id="email" type="email" name="email" placeholder="Your  email" />
+
+  <label for="subject"><b>Subject</b></label>
+  <input id="subject" type="text" name="subject" placeholder="Enter a subject" />
+
+  <label for="message"><b>Message</b></label>
+  <textarea id="message" name="message" placeholder="Enter Message" rows="5"></textarea>
+
+  <input type="submit" value="Send" class="btn" />
+</form>
+
+<% if (send === 'true') { %>
+  <script>
+    Swal.fire({
+      title: 'Sent!',
+      text: 'Thanks for contacting us',
+      icon: 'success',
+    })
+  </script>
+<% } %>
+
+<% if (send === 'error') { %>
+  <script>
+    Swal.fire({
+      title: 'Failed!',
+      text: 'There is something wrong',
+      icon: 'error',
+      confirmButtonText: 'Try Again'
+    })
+  </script>
+<% } %>
