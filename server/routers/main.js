@@ -1,20 +1,9 @@
+// require('dotenv').config();
+
 const express = require('express');
 const router = express.Router();
 const Post = require('../models/post');
 const nodemailer = require('nodemailer');
-
-// nodemailer config
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  host: 'smtp.gmail.com',
-  port: 465,
-  secure: true,
-  auth: {
-    user: 'aldirmd.freelance@gmail.com',
-    pass: 'wadlyhldarnqdgeo'
-  }
-});
-
 
 // routers
 
@@ -82,7 +71,7 @@ router.get('/about', (req, res) => {
 
 // GET - contact section
 router.get('/contact', (req, res) => {
-  const {send} = req.query;
+  const { send } = req.query;
 
   res.render('contact', { pageTitle: 'Contact Us', currentRoute: '/contact', send })
 })
@@ -91,15 +80,28 @@ router.get('/contact', (req, res) => {
 router.post('/contact', (req, res) => {
   const { email, subject, message } = req.body;
 
+  // nodemailer config
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    auth: {
+      user: process.env.SENDER,
+      pass: process.env.PASSWORD
+    }
+  });
+
   const mailOptions = {
     from: email,
-    to: 'aldi.rahmaddani12@gmail.com',
+    to: process.env.SENDER,
     subject: subject,
     text: message + `\n(sender: ${email})`
   };
 
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
+      console.log(error)
       res.redirect('/contact/?send=error')
     } else {
       res.redirect('/contact/?send=true')
