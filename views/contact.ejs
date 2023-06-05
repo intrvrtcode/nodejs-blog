@@ -2,13 +2,13 @@
 
 <form action="/contact" method="POST" autocomplete="off">
   <label for="email"><b>Email</b></label>
-  <input id="email" type="email" name="email" placeholder="Your  email" />
+  <input id="email" type="email" name="email" placeholder="Your  email" required />
 
   <label for="subject"><b>Subject</b></label>
-  <input id="subject" type="text" name="subject" placeholder="Enter a subject" />
+  <input id="subject" type="text" name="subject" placeholder="Enter a subject" required/>
 
   <label for="message"><b>Message</b></label>
-  <textarea id="message" name="message" placeholder="Enter Message" rows="5"></textarea>
+  <textarea id="message" name="message" placeholder="Enter Message" rows="5" required></textarea>
 
   <input type="submit" value="Send" class="btn" />
 </form>

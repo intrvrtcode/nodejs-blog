@@ -20,19 +20,3 @@ document.addEventListener('DOMContentLoaded', () => {
     e.target('aria-expanded', 'false');
   })
 })
-
-// admin page
-const loginSection = document.getElementById('login-section');
-const RegisterSection = document.getElementById('register-section');
-
-// toggle register
-document.getElementById('toggle-register').addEventListener('click', () => {
-  RegisterSection.style.display = 'block';
-  loginSection.style.display = 'none';
-});
-
-// toggle login
-document.getElementById('toggle-login').addEventListener('click', () => {
-  RegisterSection.style.display = 'none';
-  loginSection.style.display = 'block';
-})

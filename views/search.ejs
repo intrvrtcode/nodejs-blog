@@ -10,7 +10,7 @@
       <li>
         <a href="/post/<%= post._id %>">
           <span>
-            <%= post.title %>
+            <%= post.title %> <i class="fa-solid fa-arrow-up-right-from-square" style="color: #5e5c64;"></i>
           </span>
           <span class="article-list__date">
             <%= post.createdAt.toDateString() %>
@@ -19,12 +19,12 @@
       </li>
       <% }) %>
 
-      <% if (data.length === 0) { %>
-        <div class="no-results">
-          <img src="/img/no-results.png" />
-          <p>- no articles found -</p>
-        </div>
-      <% } %>
+        <% if (data.length===0) { %>
+          <div class="no-results">
+            <img src="/img/no-results.png" />
+            <p>- no articles found -</p>
+          </div>
+          <% } %>
 
   </ul>
 
