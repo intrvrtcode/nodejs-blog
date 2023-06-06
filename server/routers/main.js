@@ -3,6 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const Post = require('../models/post');
+const Comment = require('../models/comment')
 const nodemailer = require('nodemailer');
 
 // routers
@@ -37,7 +38,15 @@ router.get('/post/:id', async (req, res) => {
     let slug = req.params.id;
 
     const data = await Post.findById(slug).exec();
-    res.render('post', { data, pageTitle: null, currentRoute: `/post/${slug}` });
+    let comments = await Comment.findOne({ id_post: slug })
+
+    if (comments) {
+      comments = comments
+    } else {
+      comments = { body: [] }
+    }
+
+    res.render('post', { data, comments, pageTitle: null, currentRoute: `/post/${slug}` });
   } catch (e) {
     console.log(e);
   }
@@ -107,6 +116,18 @@ router.post('/contact', (req, res) => {
       res.redirect('/contact/?send=true')
     }
   });
+});
+
+// POST - add comment
+router.post('/post/comment/:id', async (req, res) => {
+  const person = req.cookies.username || 'Anonim'
+
+  const newComment = { person: person, comment: req.body.comment };
+  const response = await Comment.findOneAndUpdate(
+    { id_post: req.params.id },
+    { $push: { body: newComment } })
+    
+  res.redirect('/post/' + req.params.id)
 })
 
 module.exports = router;

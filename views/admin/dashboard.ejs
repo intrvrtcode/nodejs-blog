@@ -20,7 +20,7 @@
         <a href="/edit-post/<%= item._id %>" class="btn">Edit</a>
 
         <form action="/delete-post/<%= item._id %>?_method=DELETE" method="POST">
-          <span id="delete-btn" class="btn">Delete</span>
+          <span class="btn-delete btn">Delete</span>
         </form>
       </div>
     </li>
@@ -33,22 +33,24 @@
 </ul>
 
 <script>
-  const BtnDelete = document.querySelector('#delete-btn');
+  const BtnDelete = document.querySelectorAll('.btn-delete.btn');
 
-  BtnDelete.addEventListener('click', async (e) => {
-    e.preventDefault();
-
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You will not be able to recover this post!",
-      showCancelButton: true,
-      confirmButtonColor: '#DD6B55',
-      confirmButtonText: 'Yes',
-      cancelButtonText: "No",
-    }).then((result) => {
-      if (result['isConfirmed']) {
-        e.target.parentElement.submit()
-      }
+  BtnDelete.forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You will not be able to recover this post!",
+        showCancelButton: true,
+        confirmButtonColor: '#DD6B55',
+        confirmButtonText: 'Yes',
+        cancelButtonText: "No",
+      }).then((result) => {
+        if (result['isConfirmed']) {
+          e.target.parentElement.submit()
+        }
+      })
     })
   })
 </script>

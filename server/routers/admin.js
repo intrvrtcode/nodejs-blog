@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Post = require('../models/post');
 const User = require('../models/user');
+const Comment = require('../models/comment');
 
 const adminLayout = '../views/layout/admin'
 const jwtSecret = process.env.JWT_SECRET
@@ -137,6 +138,9 @@ router.post('/add-post', authMiddleware, async (req, res) => {
 
       const newPost = new Post({ title, body, image, tags: tags.split(/,\s*/g), author: req.cookies.username });
       const response = await Post.create(newPost);
+
+      const newBlankComment = new Comment({id_post: response._id, body: []});
+      await Comment.create(newBlankComment);
       
       res.redirect('/dashboard/?newP=true');
 
@@ -186,6 +190,7 @@ router.delete('/delete-post/:id', authMiddleware, async (req, res) => {
   try {
 
     await Post.deleteOne({ _id: req.params.id });
+    await Comment.deleteOne({id_post: req.params.id});
     res.redirect('/dashboard/?deleted=true')
 
   } catch (err) {

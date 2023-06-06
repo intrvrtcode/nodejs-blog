@@ -281,19 +281,22 @@ img {
 .article {
   margin-top: 2rem;
   font-size: 1.1rem;
+  text-align: justify;
 }
 
-.article::first-letter {
+.article p:first-child:first-letter {
   font-size: 3rem;
   font-weight: bold;
+  margin-right: .3rem;
   line-height: 4rem;
   text-transform: uppercase;
+  color: rgb(33, 167, 190);
 }
 
 
 /* Footer */
 .footer {
-  margin: 4rem;
+  margin: 4rem 0 2.5rem;
   text-align: center;
 }
 
@@ -531,6 +534,103 @@ p.tags {
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
+.post-gap {
+  margin-top: 3rem;
+}
+
+#comments-btn {
+  display: inline-block;
+  margin-top: 1rem;
+}
+
+.modal-comments {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.35);
+  top: 0;
+  left: 0;
+  transition: ease-in-out .4s;
+  transform: scale(0);
+}
+
+.modal-comments .modal-container {
+  min-width: 400px;
+  width: 500px;
+  background-color: whitesmoke;
+  max-height: 80vh;
+  overflow-y: scroll;
+}
+
+.modal-comments .modal-container .modal-header {
+  position: relative;
+  background-color: var(--black);
+  color: var(--gray-light);
+}
+
+.modal-header #xmark {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.modal-header #xmark:hover {
+  color: #faf5eec0;
+}
+
+.modal-comments .modal-container h3 {
+  text-align: center;
+  margin: 0 0 1rem;
+  padding: 10px 0;
+}
+
+.modal-comments .modal-container .modal-content {
+  padding: 5px 1rem 1.5rem;
+}
+
+.modal-content p {
+  margin-bottom: 0;
+}
+
+.modal-content .comment-posted {
+  color: #585858;
+  font-size: .8rem;
+}
+
+.modal-comments .modal-container .modal-content .person {
+  color: #1c71d8;
+  background-color: #1c71d852;
+  padding: 0 .5rem;
+}
+
+#add-comments {
+  position: relative;
+  margin-top: 1rem;
+}
+
+#add-comments #add-comment-btn {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+  border-radius: 50%;
+  padding: 2px 5px;
+  background-color: var(--black);
+  color: var(--gray-light);
+}
+
+.no-comment-yet {
+  background-color: #7e7e7e73;
+  padding: 1rem;
+  font-size: 1.3rem;
+}
+
 /* Admin Login / Register */
 .input-wrapper {
   position: relative;
@@ -543,4 +643,10 @@ p.tags {
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
+}
+
+/* Search result section */
+#post-not-found {
+  font-size: 3.5rem;
+  margin-bottom: 2rem;
 }

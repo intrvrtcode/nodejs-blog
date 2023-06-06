@@ -1,23 +1,78 @@
 <div>
   <h1 style="text-align: center;">
-    <%= data.title !== null ? data.title : '' %>
+    <%= data.title !==null ? data.title : '' %>
   </h1>
 
   <div class="hero-image">
     <% if (data.image) { %>
-      <img src="<%= data.image %>" alt="article image"/>
+      <img src="<%= data.image %>" alt="article image" />
       <% } %>
   </div>
 
-  <p class="post-info">by <%= data.author %> - <%= data.updatedAt.toDateString() %></p>
+  <p class="post-info">by <%= data.author %> - <%= data.updatedAt.toDateString() %>
+  </p>
 
   <p class="tags">
-    <% data.tags.forEach(item => { %>
-     <span>#<%= item %></span>
-    <% }) %>
+    <% data.tags.forEach(item=> { %>
+      <span>#<%= item %></span>
+      <% }) %>
   </p>
-  
+
   <article class="article">
-    <%= data.body %>
+    <% data.body.split(/[\r\n]+/gm).forEach(paragraf=> { %>
+      <p>
+        <%= paragraf %>
+      </p>
+      <% }) %>
   </article>
+
+  <hr class="post-gap" />
+  <span id="comments-btn" class="btn"><i class="fa-solid fa-comment"></i> Comments</span>
 </div>
+
+<div class="modal-comments">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h3>All comments</h3>
+      <span id="xmark"><i class="fa-solid fa-xmark fa-2xl"></i></span>
+    </div>
+    <div class="modal-content">
+      <% if (comments.body.length === 0) { %>
+       <p class="no-comment-yet">No comments yet <span><i class="fa-solid fa-comment-slash"></i></span></p>
+      <% } %>
+
+      <% comments.body.forEach(item=> { %>
+        <div class="comment">
+          <p><%= item.comment %> - <span class="person"><%= item.person %></span></p>
+          <span class="comment-posted"><%= item.addedAt.toDateString(); %></span>
+        </div>
+        <% }) %>
+
+          <form id="add-comments" action="/post/comment/<%= data._id %>" method="POST">
+            <input type="text" name="comment" placeholder="Add comment" />
+            <span id="add-comment-btn"><i class="fa-solid fa-plus fa-lg"></i></span>
+          </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  const modalComments = document.querySelector('.modal-comments');
+  const showCommentsBtn = document.getElementById('comments-btn');
+  const closeModalBtn = document.getElementById('xmark');
+  const addCommentBtn = document.getElementById('add-comment-btn');
+
+  showCommentsBtn.addEventListener('click', (e) => {
+    modalComments.style.transform = "scale(1)";
+  })
+
+  closeModalBtn.addEventListener('click', (e) => {
+    modalComments.style.transform = 'scale(0)';
+  })
+
+  addCommentBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    e.target.parentElement.parentElement.submit()
+  })
+</script>
