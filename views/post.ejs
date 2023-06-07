@@ -27,7 +27,13 @@
   </article>
 
   <hr class="post-gap" />
-  <span id="comments-btn" class="btn"><i class="fa-solid fa-comment"></i> Comments</span>
+
+  <div class="btn-post-wrapper">
+    <span id="comments-btn" class="btn"><i class="fa-solid fa-comment"></i> Comments</span>
+    <span data-id="<%= data._id %>" id="upvote-btn" class="btn"><span data-id="<%= data._id %>">
+        <%= data.likes %>
+      </span> <i data-id="<%= data._id %>" class="fa-regular fa-circle-up fa-lg"></i></span>
+  </div>
 </div>
 
 <div class="modal-comments">
@@ -37,21 +43,27 @@
       <span id="xmark"><i class="fa-solid fa-xmark fa-2xl"></i></span>
     </div>
     <div class="modal-content">
-      <% if (comments.body.length === 0) { %>
-       <p class="no-comment-yet">No comments yet <span><i class="fa-solid fa-comment-slash"></i></span></p>
-      <% } %>
+      <% if (comments.body.length===0) { %>
+        <p class="no-comment-yet">No comments yet <span><i class="fa-solid fa-comment-slash"></i></span></p>
+        <% } %>
 
-      <% comments.body.forEach(item=> { %>
-        <div class="comment">
-          <p><%= item.comment %> - <span class="person"><%= item.person %></span></p>
-          <span class="comment-posted"><%= item.addedAt.toDateString(); %></span>
-        </div>
-        <% }) %>
+          <% comments.body.forEach(item=> { %>
+            <div class="comment">
+              <p>
+                <%= item.comment %> - <span class="person">
+                    <%= item.person %>
+                  </span>
+              </p>
+              <span class="comment-posted">
+                <%= item.addedAt.toDateString(); %>
+              </span>
+            </div>
+            <% }) %>
 
-          <form id="add-comments" action="/post/comment/<%= data._id %>" method="POST">
-            <input type="text" name="comment" placeholder="Add comment" />
-            <span id="add-comment-btn"><i class="fa-solid fa-plus fa-lg"></i></span>
-          </form>
+              <form id="add-comments" action="/post/comment/<%= data._id %>" method="POST">
+                <input type="text" name="comment" placeholder="Add comment" />
+                <span id="add-comment-btn"><i class="fa-solid fa-plus fa-lg"></i></span>
+              </form>
     </div>
   </div>
 </div>
@@ -61,6 +73,7 @@
   const showCommentsBtn = document.getElementById('comments-btn');
   const closeModalBtn = document.getElementById('xmark');
   const addCommentBtn = document.getElementById('add-comment-btn');
+  const upvoteBtn = document.getElementById('upvote-btn');
 
   showCommentsBtn.addEventListener('click', (e) => {
     modalComments.style.transform = "scale(1)";
@@ -74,5 +87,30 @@
     e.preventDefault();
 
     e.target.parentElement.parentElement.submit()
+  })
+
+  upvoteBtn.addEventListener('click', (e) => {
+    upvoteBtn.classList.toggle('active');
+
+    if (upvoteBtn.classList.contains('active')) {
+      fetch(`/post/upvote/${e.target.dataset.id}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          "action": "up"
+        })
+      }).then(res => res.redirected ? window.location.href = res.url :
+        upvoteBtn.firstChild.textContent = parseInt(upvoteBtn.firstChild.textContent) + 1)
+
+    } else {
+      etch(`/post/upvote/${e.target.dataset.id}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          "action": "down"
+        })
+      }).then(res => res.redirected ? window.location.href = res.url :
+        upvoteBtn.firstChild.textContent = parseInt(upvoteBtn.firstChild.textContent) + 1)
+    }
   })
 </script>

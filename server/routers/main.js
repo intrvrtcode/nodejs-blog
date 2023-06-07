@@ -1,12 +1,31 @@
-// require('dotenv').config();
-
 const express = require('express');
 const router = express.Router();
 const Post = require('../models/post');
 const Comment = require('../models/comment')
 const nodemailer = require('nodemailer');
+const jwt = require('jsonwebtoken');
+
+const jwtSecret = process.env.JWT_SECRET
 
 // routers
+
+// Middleware
+const authMiddleware = (req, res, next) => {
+  const token = req.cookies.token;
+  if (!token) {
+    res.redirect(303, '/admin');
+    return null;
+  }
+
+  try {
+    const decoded = jwt.verify(token, jwtSecret);
+    req.userId = decoded.userId;
+    isAuth = true;
+    next();
+  } catch (e) {
+    return res.status(401).json({ message: 'Unauthorized' })
+  }
+}
 
 // Home Route
 router.get('/', async (req, res) => {
@@ -119,15 +138,35 @@ router.post('/contact', (req, res) => {
 });
 
 // POST - add comment
-router.post('/post/comment/:id', async (req, res) => {
+router.post('/post/comment/:id', authMiddleware, async (req, res) => {
   const person = req.cookies.username || 'Anonim'
 
   const newComment = { person: person, comment: req.body.comment };
   const response = await Comment.findOneAndUpdate(
     { id_post: req.params.id },
     { $push: { body: newComment } })
-    
+
   res.redirect('/post/' + req.params.id)
+})
+
+
+// POST - upvote
+router.post('/post/upvote/:id', authMiddleware, async (req, res) => {
+  const action = req.body.action
+
+  if (action === 'up') {
+    const response = await Post.findOneAndUpdate(
+      { _id: req.params.id },
+      { $inc: { likes: 1 } }
+    ).exec();
+  } else {
+    const response = await Post.findOneAndUpdate(
+      { _id: req.params.id },
+      { $inc: { likes: -1 } }
+    ).exec();
+  }
+
+  res.end();
 })
 
 module.exports = router;
