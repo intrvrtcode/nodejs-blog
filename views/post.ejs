@@ -30,8 +30,8 @@
 
   <div class="btn-post-wrapper">
     <span id="comments-btn" class="btn"><i class="fa-solid fa-comment"></i> Comments</span>
-    <span data-id="<%= data._id %>" id="upvote-btn" class="btn"><span data-id="<%= data._id %>">
-        <%= data.likes %>
+    <span data-id="<%= data._id %>" id="upvote-btn" class="btn <%= isUpvote ? 'active' : '' %>"><span data-id="<%= data._id %>">
+        <%= data.likes.length %>
       </span> <i data-id="<%= data._id %>" class="fa-regular fa-circle-up fa-lg"></i></span>
   </div>
 </div>
@@ -103,14 +103,14 @@
         upvoteBtn.firstChild.textContent = parseInt(upvoteBtn.firstChild.textContent) + 1)
 
     } else {
-      etch(`/post/upvote/${e.target.dataset.id}`, {
+      fetch(`/post/upvote/${e.target.dataset.id}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           "action": "down"
         })
       }).then(res => res.redirected ? window.location.href = res.url :
-        upvoteBtn.firstChild.textContent = parseInt(upvoteBtn.firstChild.textContent) + 1)
+        upvoteBtn.firstChild.textContent = parseInt(upvoteBtn.firstChild.textContent) - 1)
     }
   })
 </script>

@@ -15,7 +15,7 @@ const PostSchema = new schema({
   },
   tags: {
     type: Array,
-    default: []
+    default: [String]
   },
   body: {
     type: String,
@@ -26,8 +26,8 @@ const PostSchema = new schema({
     required: true,
   },
   likes: {
-    type: Number,
-    default: 0
+    type: Array,
+    default: [String]
   },
   createdAt: {
     type: Date,

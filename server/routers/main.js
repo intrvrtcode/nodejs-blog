@@ -59,13 +59,15 @@ router.get('/post/:id', async (req, res) => {
     const data = await Post.findById(slug).exec();
     let comments = await Comment.findOne({ id_post: slug })
 
+    const isUpvote = data.likes.includes(req.cookies.username);
+
     if (comments) {
       comments = comments
     } else {
       comments = { body: [] }
     }
 
-    res.render('post', { data, comments, pageTitle: null, currentRoute: `/post/${slug}` });
+    res.render('post', { data, comments, isUpvote, pageTitle: null, currentRoute: `/post/${slug}` });
   } catch (e) {
     console.log(e);
   }
@@ -154,18 +156,21 @@ router.post('/post/comment/:id', authMiddleware, async (req, res) => {
 router.post('/post/upvote/:id', authMiddleware, async (req, res) => {
   const action = req.body.action
 
+  let response = null;
+
   if (action === 'up') {
-    const response = await Post.findOneAndUpdate(
+    response = await Post.findOneAndUpdate(
       { _id: req.params.id },
-      { $inc: { likes: 1 } }
+      { $push: { likes: req.cookies.username } }
     ).exec();
   } else {
-    const response = await Post.findOneAndUpdate(
+    response = await Post.findOneAndUpdate(
       { _id: req.params.id },
-      { $inc: { likes: -1 } }
+      { $pull: { likes: req.cookies.username } }
     ).exec();
   }
 
+  res.send(response)
   res.end();
 })
 

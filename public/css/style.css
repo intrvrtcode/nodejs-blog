@@ -302,6 +302,27 @@ img {
 
 
 /* Dashboard Admin */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dashboard-header span i {
+  font-size: 2rem;
+  margin-right: 1rem;
+  cursor: pointer;
+  transition: linear .3s;
+}
+
+.dashboard-header span:hover {
+  color: #1c71d8;
+}
+
+.dashboard-header+hr {
+  margin-top: -.5rem;
+}
+
 .admin-title {
   margin-top: 2rem;
   display: flex;
@@ -332,6 +353,7 @@ img {
 .admin-posts li {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 10px 0;
 }
 
@@ -348,23 +370,20 @@ img {
 #dashboard-username {
   display: inline-block;
   padding: 2px 5px;
-  border: 3px solid var(--black);
+  text-decoration: underline;
+  transition: linear .3s;
 }
 
-#error-alert {
-  background-color: rgb(230, 67, 67);
-  padding: 8px 2rem;
-  display: flex;
-  justify-content: space-between;
-  font-size: 1.1rem;
-  align-items: center;
-}
-
-#error-alert span {
-  border: 2px solid var(--black);
-  padding: 0 5px;
-  font-size: 1rem;
-  cursor: pointer;
+#modal-profile {
+  background-color: var(--black);
+  color: white;
+  width: 40vw;
+  max-width: 400px;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: none;
 }
 
 /* SeachBar */
@@ -434,7 +453,7 @@ img {
 /* About */
 .create-by-icons {
   display: flex;
-  gap: 3rem;
+  gap: 2rem 1rem;
   align-items: center;
   flex-wrap: wrap;
 }
@@ -550,7 +569,7 @@ p.tags {
   align-items: center;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0,0,0,0.35);
+  background-color: rgba(0, 0, 0, 0.35);
   top: 0;
   left: 0;
   transition: ease-in-out .4s;
@@ -643,6 +662,7 @@ p.tags {
 .btn-post-wrapper span:nth-child(2).active {
   background-color: #2ec27e;
 }
+
 /* Admin Login / Register */
 .input-wrapper {
   position: relative;

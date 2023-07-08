@@ -1,8 +1,14 @@
-<h3 style="text-align: center;">
-  <%= greeting %> <span id="dashboard-username">
-      <%= userName %>
-    </span>
-</h3>
+<div class="dashboard-header">
+  <h3>
+    <%= greeting %> <span id="dashboard-username">
+        <%= userName %>
+      </span>
+  </h3>
+
+  <span><i class="fa-solid fa-address-card fa-2xl"></i></span>
+</div>
+<hr />
+
 <div class="admin-title">
   <h2>Your Posts</h2>
   <a href="/add-post">+ Add New</a>
@@ -32,13 +38,26 @@
         <% } %>
 </ul>
 
+<div id="modal-profile">
+  <div class="profile-header">
+    <h4>Anonim</h4>
+    <div class="profile-image">
+      <img src="" alt="profile-image"/>
+    </div>
+  </div>
+
+  <div class="profile-body">
+
+  </div>
+</div>
+
 <script>
   const BtnDelete = document.querySelectorAll('.btn-delete.btn');
 
   BtnDelete.forEach(btn => {
     btn.addEventListener('click', async (e) => {
       e.preventDefault();
-      
+
       Swal.fire({
         title: "Are you sure?",
         text: "You will not be able to recover this post!",
